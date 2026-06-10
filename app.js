@@ -20,6 +20,20 @@ function formatDisplayDate(date) {
   return date.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
 }
 
+function getStoredMemos() {
+  try {
+    const raw = localStorage.getItem('calendar-memos');
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    console.error('讀取 localStorage 失敗：', error);
+    return [];
+  }
+}
+
+function saveStoredMemos(memos) {
+  localStorage.setItem('calendar-memos', JSON.stringify(memos));
+}
+
 function renderCalendar() {
   calendarGrid.innerHTML = '';
   const year = currentDate.getFullYear();
@@ -67,19 +81,9 @@ function renderCalendar() {
   }
 }
 
-async function loadMemos() {
-  memoList.innerHTML = '載入中...';
-  try {
-    const response = await fetch(`/api/memos?date=${selectedDate}`);
-    const data = await response.json();
-    if (data.success) {
-      renderMemoList(data.memos);
-    } else {
-      memoList.textContent = data.error || '無法載入備忘錄。';
-    }
-  } catch (error) {
-    memoList.textContent = `錯誤：${error.message}`;
-  }
+function loadMemos() {
+  const memos = getStoredMemos().filter((memo) => memo.date === selectedDate);
+  renderMemoList(memos);
 }
 
 function renderMemoList(memos) {
@@ -105,9 +109,8 @@ function renderMemoList(memos) {
     deleteButton.className = 'memo-delete-btn';
     deleteButton.type = 'button';
     deleteButton.textContent = '刪除';
-    deleteButton.addEventListener('click', async () => {
-      await deleteMemo(memo.id);
-      loadMemos();
+    deleteButton.addEventListener('click', () => {
+      deleteMemo(memo.id);
     });
 
     item.appendChild(content);
@@ -117,44 +120,31 @@ function renderMemoList(memos) {
   });
 }
 
-async function saveMemo() {
+function saveMemo() {
   const text = memoText.value.trim();
   if (!text) {
     alert('請輸入備忘錄內容。');
     return;
   }
 
-  saveMemoBtn.disabled = true;
-  try {
-    const response = await fetch('/api/memos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: selectedDate, text })
-    });
-    const data = await response.json();
-    if (data.success) {
-      memoText.value = '';
-      loadMemos();
-    } else {
-      alert(data.error || '無法儲存備忘錄。');
-    }
-  } catch (error) {
-    alert(`錯誤：${error.message}`);
-  } finally {
-    saveMemoBtn.disabled = false;
-  }
+  const memos = getStoredMemos();
+  const memo = {
+    id: Date.now(),
+    date: selectedDate,
+    text,
+    createdAt: new Date().toISOString()
+  };
+
+  memos.unshift(memo);
+  saveStoredMemos(memos);
+  memoText.value = '';
+  loadMemos();
 }
 
-async function deleteMemo(id) {
-  try {
-    const response = await fetch(`/api/memos/${id}`, { method: 'DELETE' });
-    const data = await response.json();
-    if (!data.success) {
-      alert(data.error || '刪除備忘錄失敗。');
-    }
-  } catch (error) {
-    alert(`錯誤：${error.message}`);
-  }
+function deleteMemo(id) {
+  const memos = getStoredMemos().filter((memo) => memo.id !== id);
+  saveStoredMemos(memos);
+  loadMemos();
 }
 
 prevMonthBtn.addEventListener('click', () => {

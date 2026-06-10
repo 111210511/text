@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: calendar-memo
-    env: node
-    branch: main
-    plan: free
-    buildCommand: npm install
-    startCommand: npm start

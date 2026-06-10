@@ -1,13 +1,11 @@
 {
-  "name": "fullstack-sample",
+  "name": "calendar-memo-static",
   "version": "1.0.0",
-  "description": "簡單前後端範例應用，Express 後端 + 靜態前端",
-  "main": "server.js",
+  "description": "純前端日曆備忘錄，使用 localStorage 儲存資料，適合部署到 Vercel 或 GitHub Pages。",
   "scripts": {
-    "start": "node server.js"
+    "start": "npx http-server . -p 3000"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "sqlite3": "^5.1.6"
+    "http-server": "^14.1.1"
   }
 }

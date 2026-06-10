@@ -1,6 +1,6 @@
 # 日曆備忘錄應用
 
-這是一個簡單的前後端專案，使用 Node.js 和 Express 作為後端，前端使用靜態 HTML/CSS/JavaScript。
+這是一個純前端靜態專案，所有備忘錄資料都儲存在瀏覽器的 `localStorage` 中。只要打開 `index.html` 或將此專案部署到靜態網站服務，就能正常運作。
 
 ## 安裝與執行
 
@@ -11,7 +11,7 @@
 npm install
 ```
 
-3. 啟動伺服器
+3. 啟動本機靜態伺服器
 
 ```bash
 npm start
@@ -23,19 +23,6 @@ npm start
 http://localhost:3000
 ```
 
-## 部署建議
-
-本專案使用 Node.js + Express 後端，並將備忘錄儲存在 SQLite 本地資料庫 `memos.db`。最適合的部署服務是可以支援長時間運行 Node.js Web Service 的平台，例如 Render。
-
-1. 登入 Render
-2. 新增一個 Web Service
-3. 連接 GitHub 倉庫：`https://github.com/111210511/text`
-4. 選擇分支：`main`
-5. Build Command：`npm install`
-6. Start Command：`npm start`
-
-> Vercel 目前不適合直接部署這個專案，因為 Vercel 的 serverless 環境無法穩定保存 SQLite 本地資料庫。
-
 ## 功能
 
 - 顯示月曆並支援上下個月份
@@ -43,10 +30,24 @@ http://localhost:3000
 - 新增備忘錄
 - 刪除備忘錄
 
-## API
+## 部署建議
 
-- `GET /api/memos?date=YYYY-MM-DD` 取得指定日期備忘錄
-- `POST /api/memos` 新增備忘錄，JSON body: `{ date, text }`
-- `DELETE /api/memos/:id` 刪除備忘錄
+這個專案已改成純前端靜態網站，最適合直接部署到以下平台：
 
-> 備忘錄資料目前儲存在後端記憶體中，重啟伺服器後會清除。
+- Vercel
+- GitHub Pages
+
+### Vercel 部署
+
+1. 登入 Vercel
+2. 新增專案並連接 GitHub 倉庫：`https://github.com/111210511/text`
+3. 選擇分支：`main`
+4. Build Command：留空
+5. Output Directory：留空
+
+### GitHub Pages 部署
+
+1. 將此專案推送到 GitHub
+2. 在倉庫設定中啟用 GitHub Pages，來源選擇 `main` 分支的根目錄
+
+> 這個版本不再使用 Express 或 SQLite，改成可直接靜態部署的方式。
