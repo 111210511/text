@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日曆備忘錄</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <h1>日曆備忘錄</h1>
+      <p>選擇日期，新增與查看備忘錄。</p>
+
+      <div class="calendar-shell">
+        <div class="calendar-header">
+          <button id="prevMonthBtn">◀</button>
+          <div>
+            <div id="calendarTitle" class="calendar-title"></div>
+            <div id="selectedDateLabel" class="selected-date-label"></div>
+          </div>
+          <button id="nextMonthBtn">▶</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <section class="memo-panel">
+        <h2>備忘錄</h2>
+        <div class="memo-meta">選擇日期：<span id="selectedDate"></span></div>
+        <div class="memo-form">
+          <textarea id="memoText" rows="3" placeholder="輸入你的備忘錄內容..."></textarea>
+          <button id="saveMemoBtn">儲存備忘錄</button>
+        </div>
+        <div id="memoList" class="memo-list"></div>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
