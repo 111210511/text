@@ -23,6 +23,19 @@ npm start
 http://localhost:3000
 ```
 
+## 部署建議
+
+本專案使用 Node.js + Express 後端，並將備忘錄儲存在 SQLite 本地資料庫 `memos.db`。最適合的部署服務是可以支援長時間運行 Node.js Web Service 的平台，例如 Render。
+
+1. 登入 Render
+2. 新增一個 Web Service
+3. 連接 GitHub 倉庫：`https://github.com/111210511/text`
+4. 選擇分支：`main`
+5. Build Command：`npm install`
+6. Start Command：`npm start`
+
+> Vercel 目前不適合直接部署這個專案，因為 Vercel 的 serverless 環境無法穩定保存 SQLite 本地資料庫。
+
 ## 功能
 
 - 顯示月曆並支援上下個月份
